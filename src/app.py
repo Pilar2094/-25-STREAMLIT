@@ -1,16 +1,12 @@
 import streamlit as st
-st.write('Hello, world!')
-
-
+st.write('que pasa bro')
 from pickle import load
-
-model = load(open("../models/spam_detector.sav", "rb"))
 import numpy as np 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import streamlit as st
 import re          
-
+model = load(open("../models/spam_detector.sav", "rb"))
 @st.cache_resource
 def load_vectorizer():
     data = pd.read_csv("https://raw.githubusercontent.com/4GeeksAcademy/NLP-project-tutorial/main/url_spam.csv")
