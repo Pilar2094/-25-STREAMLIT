@@ -4,20 +4,28 @@ st.write('Hello, world!')
 
 from pickle import load
 
-model = load(open("models/naive_bayes_alpha_1-9176382_fit_prior_False_42.sav", "rb"))
-class_dict = {
-    "0": "Iris setosa",
-    "1": "Iris versicolor",
-}
+model = load(open("../models/naive_bayes_alpha_1-9176382_fit_prior_False_42.sav", "rb"))
+import numpy as np 
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+import streamlit as st
+import re          
 
-st.title("Iris - Model prediction")
+@st.cache_resource
+def load_vectorizer():
+    data = pd.read_csv("https://raw.githubusercontent.com/4GeeksAcademy/NLP-project-tutorial/main/url_spam.csv")
+    data["label"] = data["label"].map({"spam": 1, "ham": 0})
+    vectorizer = TfidfVectorizer()
+    vectorizer.fit(data["url"])
+    return vectorizer
 
-val1 = st.slider("Petal width", min_value = 0.0, max_value = 4.0, step = 0.1)
-val2 = st.slider("Petal length", min_value = 0.0, max_value = 4.0, step = 0.1)
-val3 = st.slider("Sepal width", min_value = 0.0, max_value = 4.0, step = 0.1)
-val4 = st.slider("Sepal length", min_value = 0.0, max_value = 4.0, step = 0.1)
+st.title("DETECTOR SPAM URLS - Model prediction")
+
+val1 = st.sidebar.checkbox("Show Analysis by STATUS", True, key=1)
+
+class_dict = {0: "no spam", 1: "spam"}
 
 if st.button("Predict"):
-    prediction = str(model.predict([[val1, val2, val3, val4]])[0])
-    pred_class = class_dict[prediction]
+    prediction = str(model.predict([[val1]])[0])
+    pred_class = class_dict[int(prediction)]
     st.write("Prediction:", pred_class)
