@@ -4,7 +4,7 @@ st.write('Hello, world!')
 
 from pickle import load
 
-model = load(open("../models/naive_bayes_alpha_1-9176382_fit_prior_False_42.sav", "rb"))
+model = load(open("../models/spam_detector.sav", "rb"))
 import numpy as np 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
